@@ -2,56 +2,39 @@
 import itertools
 import math
 import numpy as np
+from tqdm import tqdm
+from sympy.utilities.iterables import multiset_permutations
 
-n = 2
-lst = list(range(4*n))
-seqs = list(itertools.permutations(lst))
-seqs_new = []
+# n=4 gives 36324288000 unique sequences
 
-# generate all possible sequences of values (includes duplicates)
-for seq in seqs:
-    s_temp = []
-    for i, j in enumerate(list(seq)):
-        if j in [0,1,2,3]:
-            s_temp.append(0)
-        elif j in [4,5,6,7]:
-            s_temp.append(1)
-    seqs_new.append(s_temp)
+n = 4
+lst = []
+for i in range(n):
+    for j in range(4):
+        lst.append(i)
+seqs = list(tqdm(multiset_permutations(lst)))
 
 # figure out maximum number of piles for each sequences
 maxima = []
-for j, seq_ in enumerate(seqs_new):
+for j, seq_ in tqdm(enumerate(seqs)):
     max_per_seq = []
     piles_counts = [0 for i in range(n)]
     for i, val in enumerate(seq_):
+        max_temp = 0
         piles_counts[val] += 1
-
-        if piles_counts[val] > 3 or piles_counts[val - 1] > 3:
-            if piles_counts[val - 1] > 3:
-                max_temp = len(piles_counts) - 2
-            else:
-                if piles_counts[val - 1] == 0:
-                    max_temp = len(piles_counts) - 2
-                else:
-                    max_temp = len(piles_counts) - 1
-        else:
-            if piles_counts[val - 1] == 0:
-                max_temp = len(piles_counts) - 1
-            else:
-                max_temp = len(piles_counts)
-        
+        for count in piles_counts:
+            if count in [1,2,3]: # don't count a pile with no cards or > 3 cards
+                max_temp += 1
         max_per_seq.append(max_temp)
-
-        if j == 0:
-            print(piles_counts)
-            print(max_temp)
-
     maxima.append(max(max_per_seq))
 
 
-duplicate_factor = math.factorial(4*n)
+duplicate_factor = math.factorial(4*n)/24**2
 
-E_n = (1*maxima.count(1) + 2*maxima.count(2)) / duplicate_factor
+E_n = 0
+for i in range(1,n+1):
+    E_n += (i)*maxima.count(i)
+E_n = E_n / duplicate_factor
 
 print(E_n)
 # %%
