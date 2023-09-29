@@ -95,7 +95,7 @@ def create_lists_with_results(lines, player):
 
 p1_hands, p2_hands = create_lists_with_results(lines, 1), create_lists_with_results(lines, 2)
 
-p1_count, p2_count = 0, 0
+p1_count = 0
 for i in range(len(p1_hands)):
     p1, p2 = p1_hands[i], p2_hands[i]
 
@@ -119,7 +119,6 @@ for i in range(len(p1_hands)):
                 new_p2 = [i for i in p2[0] if i not in p2_double]
                 if max(new_p1) > max(new_p2):
                     p1_count += 1
-                    # print(p1, p2)
 
     # simple check if they don't have matching hands
     elif p1[2] > p2[2]:

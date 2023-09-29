@@ -1,20 +1,20 @@
-from fractions import Fraction
-
-a = [1,2,1]
-n = len(a)
-
-d = []
-for i in range(n):
-    if i == 0:
-        d.append(1/a[0])
+coeffs = [2]
+k = 1
+for i in range(99):
+    if i % 3 == 1:
+        coeffs.append(2*k)
+        k += 1
         continue
-    d.append(1/(d[i-1] + (1/a[n-i])))
-d[-1] += 2
+    coeffs.append(1)
 
-num_digits = len(str(d[-1]).split(".")[1])
+b = coeffs[-2]*coeffs[-1] + 1
+x = coeffs[-1]
+for i in range((length := int(len(coeffs)) - 3)):
+    y = b
+    b = coeffs[length - i]*b + x
+    x = y
+    
+numerator = (coeffs[0] * b) + x
 
-numerator = int(d[-1] * 10**num_digits)
-denominator = 10**num_digits
-
-frac = Fraction(numerator, denominator).limit_denominator()
-print(frac)
+print(sum([int(i) for i in str(numerator)]))
+    
