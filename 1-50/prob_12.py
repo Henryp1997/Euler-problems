@@ -1,51 +1,40 @@
 import math
 import numpy as np
+import time
 
-# generate triangle numbers greater than 500
-# when is n(n+1)/2 > 500? --> n^2 + n - 1000 = 0 --> n approx 31
+def get_factors(n):
+    factors = []
+    for i in range(2, n):
+        try:
+            if i > int(n / factors[0]):
+                break
+        except:
+            pass
+        if n % i == 0:
+            factors.append(i)
+    return factors
 
-def check_factors(num):
-    count = 2
-    factors_checked = [1, num]
-    for i in range(2, num):
-        if i not in factors_checked:
-            if num % i == 0:
-                count += 2 # add two because the factor must be multiplied by another number
-                factors_checked.append(i)
-                factors_checked.append(int(num / i))
+n = 20
+flag = True
+while True:
+    factors_n = get_factors(n)
+    factors_n.append(n)
+    n += 1
+    factors_n_plus_1 = get_factors(n)
+    factors_n_plus_1.append(n)
+    
+    x = len(factors_n) * len(factors_n_plus_1)
+    
+    if flag:
+        num_factors = (len(factors_n) * len(factors_n_plus_1)) + 1
+        print(num_factors, factors_n, factors_n_plus_1)
+        time.sleep(2)
+        flag = False
+        continue
+    
+    if not flag:
+        flag = True
 
-    return count
+    
 
-# n = 30
-# for i in range(1, 1000):
-#     a = i * n
-#     count = check_factors(a)
-#     print(i, count)
 
-# with open('12.txt', 'a') as f:
-#     n = 1779
-#     results = []
-#     while True:
-#         tri_num = int((n*(n+1))/2)
-
-#         if tri_num % 10 != 0:
-#             n += 1
-#             continue
-
-#         count = check_factors(tri_num)
-#         f.write(f'{n}, {tri_num}, {count}\n')
-
-#         if count > 500:
-#             print(tri_num)
-#             break
-
-#         n += 1
-#
-
-x = math.factorial(500)
-
-print(x)
-
-y = 1 + 8*x
-
-print((10**568)**2 > y)

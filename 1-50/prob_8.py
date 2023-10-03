@@ -19,4 +19,14 @@ x = '73167176531330624919225119674426574742355349194934'\
 '05886116467109405077541002256983155200055935729725'\
 '71636269561882670428252483600823257530420752963450'
 
-print(int(x))
+strings = [i for i in x.split("0") if len(i) >= 13]
+
+products = []
+for string in strings:
+    for i in range(len(string) - 12):
+        prod = 1
+        for digit in string[i:i+13]:
+            prod *= int(digit)
+        products.append(prod)
+    
+print(max(products))
