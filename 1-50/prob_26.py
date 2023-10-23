@@ -29,6 +29,8 @@ def long_division(divisor):
 
     return decimal_digits
 
+print(long_division(10))
+
 results = [0]
 for i in range(1,1000):
     results.append(len(long_division(i)))
