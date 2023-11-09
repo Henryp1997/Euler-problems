@@ -17,14 +17,15 @@ def continued_frac(N):
 
     return a
 
-count = 0
-for N in range(2, 10_001):
-    if math.sqrt(N) % 1 == 0:
-        continue
-    if len(continued_frac(N)) % 2 == 1:
-        count += 1
+if __name__ == "__main__":
+    count = 0
+    for N in range(2, 10_001):
+        if math.sqrt(N) % 1 == 0:
+            continue
+        if len(continued_frac(N)) % 2 == 1:
+            count += 1
 
-print(count)
+    print(count)
 
 
 # # OLD below
