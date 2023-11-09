@@ -5,7 +5,7 @@ import sys
 tris = []
 for i in range(45, 141):
     tris.append(int(0.5 * i * (i + 1)))
-print(tris)
+
 # square 32 to 101
 squares = []
 for i in range(32, 101):
@@ -73,71 +73,67 @@ def cycle_number(n):
             vals_to_check.append(int(cycled))
     return vals_to_check
 
-def which_list(n, already_done):
-    if n in squares and 4 not in already_done:
+def which_list(n):
+    if n in squares and 4:
         return 4
-    if n in pents and 5 not in already_done:
+    if n in pents and 5:
         return 5
-    if n in hexs and 6 not in already_done:
+    if n in hexs and 6:
         return 6
-    if n in hepts and 7 not in already_done:
+    if n in hepts and 7:
         return 7
-    if n in octs and 8 not in already_done:
+    if n in octs and 8:
         return 8
     return 0
 
-# for num1 in tris:
-#     already_done = []
-#     vals_to_check = cycle_number(num1)
-#     for num2 in vals_to_check:
-#         if (x := which_list(num2, already_done)) != 0:
-#             already_done.append(x)
-#             vals_to_check = cycle_number(num2)
-#             for num3 in vals_to_check:
-#                 if (x := which_list(num3, already_done)) != 0:
-#                     already_done.append(x)
-#                     vals_to_check = cycle_number(num3)
-#                     for num4 in vals_to_check:
-#                         if (x := which_list(num4, already_done)) != 0:
-#                             already_done.append(x)
-#                             vals_to_check = cycle_number(num4)
-#                             for num5 in vals_to_check:
-#                                 if (x := which_list(num5, already_done)) != 0:
-#                                     already_done.append(x)
-#                                     vals_to_check = cycle_number(num5)
-#                                     for num6 in vals_to_check:
-#                                         if (x := which_list(num6, already_done)) != 0:
-#                                             already_done.append(x)
-#                                             vals_to_check = cycle_number(num6)
-#                                             print(num1, num2, num3, num4, num5, num6, already_done)
-#                                             break
+results = []
 
-for a in range(1, 10):
-    for b in range(1, 10):
-        for c in range(10):
-            for d in range(1, 10):
-                for e in range(10):
-                    for f in range(1, 10):
-                        for g in range(10):
-                            for h in range(1, 10):
-                                for i in range(10):
-                                    for j in range(1, 10):
-                                        for k in range(10):
-                                            num = f'{a}{a}{b}{c}{d}{e}{f}{g}{h}{i}{j}{k}{a}{a}'
-                                            already_done = []
-                                            if (x := which_list(int(f'{a}{a}{b}{c}'), already_done)) != 0:
-                                                already_done.append(x)
-                                                if (x := which_list(int(f'{b}{c}{d}{e}'), already_done)) != 0:
-                                                    already_done.append(x)
-                                                    if (x := which_list(int(f'{d}{e}{f}{g}'), already_done)) != 0:
-                                                        already_done.append(x)
-                                                        if (x := which_list(int(f'{f}{g}{h}{i}'), already_done)) != 0:
-                                                            already_done.append(x)
-                                                            if (x := which_list(int(f'{h}{i}{j}{k}'), already_done)) != 0:
-                                                                already_done.append(x)
-                                                                if (x := which_list(int(f'{j}{k}{a}{a}'), already_done)) != 0:
-                                                                    already_done.append(x)
-                                                                    print(num)
+def recursion(num, count=0):
+    if count == 0:
+        global path
+        path = [num]
+    if count == 6:
+        if str(path[-1])[-2:] == str(path[0])[:2]:
+            print(path)
+        path = []
+        return path
+    vals_to_check = cycle_number(num)
+    for x in vals_to_check:
+        if which_list(x) != 0 and  str(path[-1])[-2:] == str(path[0])[:2]:
+            count += 1
+            path.append(x)
+            recursion(x, count)
+    return path
 
+for num in tris:
+    # vals_to_check = cycle_number(num1)
+    # for num2 in vals_to_check:
+    #     if (x := which_list(num2)) != 0:
+    #         vals_to_check = cycle_number(num2)
+    #         for num3 in vals_to_check:
+    #             if (x := which_list(num3)) != 0:
+    #                 vals_to_check = cycle_number(num3)
+    #                 for num4 in vals_to_check:
+    #                     if (x := which_list(num4)) != 0:
+    #                         vals_to_check = cycle_number(num4)
+    #                         for num5 in vals_to_check:
+    #                             if (x := which_list(num5)) != 0:
+    #                                 vals_to_check = cycle_number(num5)
+    #                                 for num6 in vals_to_check:
+    #                                     if (x := which_list(num6)) != 0:
+    #                                         vals_to_check = cycle_number(num6)
+    #                                         if str(num6)[-2:] == str(num1)[:2]:
+    #                                             results.append((num1, num2, num3, num4, num5, num6))
+    try:
+        recursion(num)
+    except:
+        pass
 
-
+for result in results:
+    nums = []
+    for i in result:
+        if (x := which_list(i)) not in nums:
+            nums.append(x)
+    if len(nums) == 6:
+        print(result)
+        print(sum(result))

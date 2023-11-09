@@ -1,20 +1,40 @@
-from prob_21 import get_divisors
+def get_divisors(n):
+    divisors = []
+    max_ = n
+    for i in range(1, n):
+        if len(divisors) > 2:
+            max_ = n / divisors[1]
+        if i > max_:
+            return divisors
+        if n % i == 0:
+            divisors.append(i)
+            
+def check_abundant(n):
+    try:
+        if sum(get_divisors(n)) > n:
+            return True
+    except:
+        return False
+    return False
 
-# abundant_nums = []
-# for i in range(1, 28124):
-#     if sum(get_divisors(i)) > i:
-#         abundant_nums.append(i)
-    
-# with open('abundant.txt', 'a') as f:
-#     for num in abundant_nums:
-#         f.write(f'{num}\n')
+abundant = []
+total = 0
+count = 0
+for i, val in enumerate(range(28124)):
+    with open('test.txt', 'w') as f:
+        f.write(f'{i}')
+    try:
+        if check_abundant(val):
+            abundant.append(val)
+            count += 1
+        yes = True
+        for k in abundant:
+            if val - k in abundant:
+                yes = False
+                break
+        if yes:
+            total += val
+    except:
+        pass
 
-with open('abundant.txt', 'r') as f:
-    nums = f.readlines()
-
-nums = [int(i.strip("\n")) for i in nums]
-
-odd_nums = [i for i in nums if i % 2 == 1]
-
-
-
+print(total)

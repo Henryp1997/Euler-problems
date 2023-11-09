@@ -1,15 +1,15 @@
-import math
-import numpy as np
-
-n = 16807
-
-n = 2
-count = 0
+max_power = 0
 while True:
-    if str(n)[0] == '1' and all(i == '0' for i in str(n)[1:]):
-        pass
-    elif (x := (10 ** (np.log10(n) / math.ceil(np.log10(n))))) % 1 < 0.00000000000001:
-        count += 1
-        print(n, x)
-    n += 1
-    # print(count)
+    if max_power > len(str(9**max_power)):
+        break
+    max_power += 1
+
+# generate all (2, 9)^power for powers up to max_power - 1
+count = 0
+for power in range(1, max_power):
+    for i in range(2, 10):
+        if len(str(i**power)) == power:
+            count += 1
+
+# 1 is also an answer
+print(count + 1)
