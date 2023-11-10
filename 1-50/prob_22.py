@@ -27,8 +27,8 @@ for i, name in enumerate(names):
         continue
     alpha_result = compare_names(name, names_sorted[i - 1])
     
-    names_sorted[i] == name if alpha_result != name else names_sorted[i - 1]
-    names_sorted[i - 1] == names_sorted[i - 1] if alpha_result != name else name
+    names_sorted[i] = name if alpha_result != name else names_sorted[i - 1]
+    names_sorted[i - 1] = names_sorted[i - 1] if alpha_result != name else name
 
     break
 
