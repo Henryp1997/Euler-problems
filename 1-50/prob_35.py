@@ -1,4 +1,4 @@
-import math
+from utils import prime_check
 
 def cycle_prime(n):
     n = str(n)
@@ -7,12 +7,6 @@ def cycle_prime(n):
         new_n = [n[a - i] for a in range(len(n))]
         others.append(int("".join(new_n)))
     return others
-
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
 
 count = 0
 for i in range(2, 1_000_000):

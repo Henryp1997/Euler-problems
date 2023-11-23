@@ -24,10 +24,12 @@ while True:
     factors_n_plus_1.append(n)
     
     x = len(factors_n) * len(factors_n_plus_1)
+    if x > 500:
+        print(n)
     
     if flag:
         num_factors = (len(factors_n) * len(factors_n_plus_1)) + 1
-        print(num_factors, factors_n, factors_n_plus_1)
+        # print(num_factors, factors_n, factors_n_plus_1)
         time.sleep(2)
         flag = False
         continue

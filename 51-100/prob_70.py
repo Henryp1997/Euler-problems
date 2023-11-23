@@ -1,29 +1,11 @@
 #%%
-
 import math
+from utils import prime_check
 
 primes = [2]
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n) + 1)):
-        if n % i == 0:
-            return False
-    return True
-for i in range(3, 5_000_001):
+for i in range(3, 500000):
     if prime_check(i):
         primes.append(i)
-
-def rel_prime(n, m):
-    for i in range(2, int(0.5*n) + 1):
-        if n % i == 0 and m % i == 0:
-            return False
-    return True
-
-def totient1(n):
-    delta = 0
-    for m in range(1, n):
-        if not rel_prime(n, m):
-            delta += 1
-    return n - delta - 1
 
 def get_prime_factors(n):
     factors = []
@@ -37,39 +19,42 @@ def get_prime_factors(n):
                 power += 1
     return factors
 
-def totient2(n):
-    factors = get_prime_factors(n)
-    phi = n
-    for factor in factors:
-        phi *= (1 - (1/factor[0]))
-    if n in primes:
-        phi -= 1
-    return math.floor(phi)
+def totient_two_factors(p1, p2):
+    return p1 * p2 * (1 - (1/p1)) * (1 - (1/p2))
 
 
-x = []
-for num in range(2, 200_001):
-    phi = totient2(num)
-    if phi is None:
-        continue
-    phi_list = [i for i in str(phi)]
-    phi_list.sort()
-    phi_sorted = "".join([i for i in phi_list])
+def check_perm(n, m):
+    n_list = [i for i in str(n)]
+    n_list.sort()
+    n_sorted = "".join([i for i in n_list])
 
-    num_list = [i for i in str(num)]
-    num_list.sort()
-    num_sorted = "".join([i for i in num_list])
+    m_list = [i for i in str(m)]
+    m_list.sort()
+    m_sorted = "".join([i for i in m_list])
 
-    if phi_sorted == num_sorted:
-        result = num / phi
-        if result < 1.00874:
-            x.append((num, phi, result))
+    if n_sorted == m_sorted:
+        return True
+    return False
+
+loc_start_check = [i - 1 for i, j in enumerate(primes) if j > math.sqrt(1e7)][0]
+
+results = []
+for prime in primes[loc_start_check::-1]:
+    for other_prime in primes[loc_start_check:]:
+        
+        product = int(prime * other_prime)
+
+        if product > 1e7:
             break
 
-# print(min(x, key=lambda y: y[2]))
+        phi = int(totient_two_factors(prime, other_prime))
+        if abs(phi - product) % 9 == 0:
+            if check_perm(phi, product):
+                results.append((product, phi, product / phi))
 
-# print(get_prime_factors(162619))
+print(len(results))
+print(min(results, key = lambda x: x[2]))
 
 
-print(to_check)
+
 # %%

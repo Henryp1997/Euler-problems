@@ -1,12 +1,7 @@
 import math
+from utils import prime_check
 
 primes = [2]
-
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n) + 1)):
-        if n % i == 0:
-            return False
-    return True
 
 if __name__ == "__main__":
 

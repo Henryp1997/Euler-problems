@@ -1,31 +1,14 @@
-import math
+#%%
 
-# squares = [n**2 for n in range(1, 100)]
+# the sum a + b + c is always even given that a^2 + b^2 = c^2
 
-# triples = []
-# values = []
-# for square in squares:
-#     for other_square in squares:
-#         if (square + other_square) in squares:
-#             a = int(math.sqrt(square)); b = int(math.sqrt(other_square)); c = int(math.sqrt(square + other_square))
-#             if (b, a, c) not in triples:
-#                 triples.append((a, b, c))
-#                 values.append(a + b + c)
-
-# values.sort()
-# print(values)
-
+from utils import prime_check
 primes = [2]
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n) + 1)):
-        if n % i == 0:
-            return False
-    return True
 for i in range(3, 750_001):
     if prime_check(i):
         primes.append(i)
 
-def get_prime_factors(n):
+def has_even_power_prime_factor(n):
     factors = []
     for i in range(2, int(n/2)+1):
         if n % i == 0 and i in primes:
@@ -33,34 +16,44 @@ def get_prime_factors(n):
             while True:
                 if int(n / (i**power)) % i != 0:
                     factors.append((i, power))
-                    break
+                    if power % 2 == 0:
+                        return True
+                    else:
+                        break
                 power += 1
-    return factors
+    return False
 
-for n in range(12, 100, 2):
-    singular = len([i[1] for i in get_prime_factors(n) if i[1] % 2 == 0]) > 0
+results = []
+for i, n in enumerate(range(12, 1_000, 2)):
+    singular = has_even_power_prime_factor(n)
     if singular:
-        print(n)
+        results.append(n)
 
-# values = [12, 24, 30]
-# n = 32
-# while n < 40:
-#     for i, val in enumerate(values):
-#         count = 0
-#         multiples = []
-#         for j in range(i):
-#             if n % values[j] == 0:
-#                 skip_val = False
-#                 for multiple in multiples:
-#                     if multiple % (n / values[j]) == 0:
-#                         skip_val = True
-#                 if not skip_val:
-#                     multiples.append(int(n/values[j]))
-#                     count += 1
-#                     if count == 1:
-#                         values.append(n)
-#                     if count == 2:
-#                         break
-#     n += 2
+for i, j in enumerate(results):
+    try:
+        print(j, j - results[i - 1])
+    except:
+        print(j)
 
-# print(values)
+# %%
+results = []
+for n in range(200):
+    # break1, break2, break3 = False, False, False
+    for a in range(3, n):
+        for b in range(3, n):
+            for c in range(3, n):
+                if a + b + c == n and a**2 + b**2 == c**2:
+                    if (n, b, a, c) not in results:
+                        results.append((n, a, b, c))
+    #                 break1, break2, break3 = True, True, True
+    #                 break
+    #         if break1:
+    #             break
+    #     if break2:
+    #         break
+    # if break3:
+    #     continue
+for i in results:
+    if (i[0] - 2) % 6 == 0:
+        print(i)
+# %%

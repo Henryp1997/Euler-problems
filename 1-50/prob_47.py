@@ -3,11 +3,7 @@ import math
 
 latest = 72409
 
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
+from utils import prime_check
 
 primes = [2]
 for i in range(1_000_000):

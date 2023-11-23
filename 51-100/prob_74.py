@@ -1,27 +1,38 @@
 import math
 
 count = 0
-chain_nums = []
-chain_lengths = []
-for n in range(12, 1_000_000):
+chains = {}
+for n in range(1, 1_000_000):
 
     nums_hit = [n]
+    i = 0
+    flag = False
     while True:
-        next_ = sum([math.factorial(int(i)) for i in str(n)])
+
+        next_ = sum([math.factorial(int(i)) for i in str(nums_hit[i])])
         if next_ in nums_hit:
+            # length = len(nums_hit)
             break
+
         nums_hit.append(next_)
-        length = len(nums_hit)
-        if next_ in chain_nums:
-            length += chain_lengths[chain_nums.index(next_)]
+        # length = len(nums_hit)
+        try:
+            # length += chains[next_] - 1
+            nums_hit += chains[next_][1:]
+            if nums_hit[0] == nums_hit[-1]:
+                nums_hit = nums_hit[:-1]
+            flag = True
             break
-        n = next_
+        except:
+            pass
+
+        i += 1
+
     for i, num in enumerate(nums_hit):
-        if num in chain_nums:
-            continue
-        chain_nums.append(num)
-        chain_lengths.append(length - i)
-    if len(nums_hit) == 60:
+        chains[num] = nums_hit[i:]
+
+for key in list(chains.keys()):
+    if len(chains[key]) == 60:
         count += 1
 
 print(count)

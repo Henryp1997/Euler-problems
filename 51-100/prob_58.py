@@ -1,16 +1,10 @@
-import math
+from utils import prime_check
 
 N = 26241
 
 top_right = [4*(n**2) - 2*n + 1 for n in range(1, int(N/2) + 1)]
 top_left = [4*(n**2) + 1 for n in range(1, int(N/2) + 1)]
 bottom_left = [4*(n**2) + 2*n + 1 for n in range(1, int(N/2) + 1)]
-
-def prime_check(num):
-    for i in range(2, math.floor(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True
 
 count = 0
 

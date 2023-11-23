@@ -1,14 +1,8 @@
-import math
 import sys
+from utils import prime_check
 
 primes = []
 raw_primes = []
-
-def prime_check(n):
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
 
 for i in range(100000, 1000000):
     if prime_check(i):
