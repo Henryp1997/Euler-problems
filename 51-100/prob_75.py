@@ -1,59 +1,47 @@
 #%%
+import math
+import collections
 
 # the sum a + b + c is always even given that a^2 + b^2 = c^2
+# generate all primative triples whose sum does not exceed 1,500,000
 
-from utils import prime_check
-primes = [2]
-for i in range(3, 750_001):
-    if prime_check(i):
-        primes.append(i)
+singulars = {}
+arr = []
+for m in range(1, 866):
 
-def has_even_power_prime_factor(n):
-    factors = []
-    for i in range(2, int(n/2)+1):
-        if n % i == 0 and i in primes:
-            power = 1
-            while True:
-                if int(n / (i**power)) % i != 0:
-                    factors.append((i, power))
-                    if power % 2 == 0:
-                        return True
-                    else:
-                        break
-                power += 1
-    return False
+    if m % 2 == 0:
+        n_range = range(1, m, 2)
 
-results = []
-for i, n in enumerate(range(12, 1_000, 2)):
-    singular = has_even_power_prime_factor(n)
-    if singular:
-        results.append(n)
+    if m % 2 == 1:
+        n_range = range(2, m + 1, 2)
 
-for i, j in enumerate(results):
-    try:
-        print(j, j - results[i - 1])
-    except:
-        print(j)
+    for n in n_range:
+        if math.gcd(n, m) == 1 and (m - n) % 2 == 1:
+            a = m**2 - n**2
+            b = 2 * m * n
+            c = m**2 + n**2
+            if a + b + c > 1_500_000:
+                continue
+            singulars[a + b + c] = 1
 
-# %%
-results = []
-for n in range(200):
-    # break1, break2, break3 = False, False, False
-    for a in range(3, n):
-        for b in range(3, n):
-            for c in range(3, n):
-                if a + b + c == n and a**2 + b**2 == c**2:
-                    if (n, b, a, c) not in results:
-                        results.append((n, a, b, c))
-    #                 break1, break2, break3 = True, True, True
-    #                 break
-    #         if break1:
-    #             break
-    #     if break2:
-    #         break
-    # if break3:
-    #     continue
-for i in results:
-    if (i[0] - 2) % 6 == 0:
-        print(i)
+
+for num in list(singulars.keys()):
+    for i in range(2, math.floor(1_500_000 / num) + 1):
+        val = num * i
+        if val > 1_500_000:
+            break
+        try:
+            singulars[val] += 1
+        except:
+            singulars[val] = 1
+
+singulars = collections.OrderedDict(sorted(singulars.items()))
+
+count = 0
+for i in list(singulars.keys()):
+    if singulars[i] == 1:
+        count += 1
+
+print(count)
+
 # %%
